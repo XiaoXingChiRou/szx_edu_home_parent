@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.szx.dao.PromotionAdMapper">
+
+    <!--嵌套查询-->
+    <resultMap id="ad_space" type="promotionAd">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"/>
+        <result property="spaceId" column="spaceId"/>
+        <result property="keyword" column="keyword"/>
+        <result property="htmlContent" column="htmlContent"/>
+        <result property="text" column="text"/>
+        <result property="link" column="link"/>
+        <result property="startTime" column="startTime"/>
+        <result property="endTime" column="endTime"/>
+        <result property="createTime" column="createTime"/>
+        <result property="updateTime" column="updateTime"/>
+        <result property="status" column="status"/>
+        <result property="priority" column="priority"/>
+        <result property="img" column="img"/>
+        <!--调用广告位查询语句-->
+        <association property="promotionSpace" select="com.szx.dao.PromotionSpaceMapper.findPromotionSpaceById" column="spaceId" javaType="com.szx.pojo.PromotionSpace"></association>
+    </resultMap>
+
+    <!--分页广告查询-->
+    <select id="findAllPromotionAdByPage" resultMap="ad_space">
+        select * from promotion_ad
+    </select>
+
+    <!--广告上下线-->
+    <update id="updatePromotionAdStatus" parameterType="promotionAd">
+        update promotion_ad set status = #{status},updateTime = #{updateTime} where id = #{id}
+    </update>
+
+</mapper>

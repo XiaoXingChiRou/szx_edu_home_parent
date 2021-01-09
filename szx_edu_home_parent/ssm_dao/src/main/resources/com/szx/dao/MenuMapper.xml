@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.szx.dao.MenuMapper">
+
+    <!--嵌套查询-->
+    <resultMap id="menuResult" type="menu">
+        <id column="id" property="id"></id>
+        <result column="href" property="href"></result>
+        <result column="icon" property="icon"></result>
+        <result column="name" property="name"></result>
+        <result column="parent_id" property="parentId"></result>
+        <result column="description" property="description"></result>
+        <result column="orderNum" property="order_num"></result>
+        <result column="shown" property="shown"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="updated_time" property="updatedTime"></result>
+        <result column="created_by" property="createdBy"></result>
+        <result column="updated_by" property="updatedBy"></result>
+        <!--配置父级菜单关联的子级菜单，关联查询-->
+        <collection property="subMenuList" ofType="menu" select="findSubMenuListByPid" column="id"></collection>
+    </resultMap>
+
+    <!--查询所有父子菜单信息-->
+    <select id="findSubMenuListByPid" parameterType="int" resultMap="menuResult">
+        select * from menu where parent_id = #{id};
+    </select>
+
+    <!--查询所有菜单信息-->
+    <select id="findAllMenu" resultType="menu">
+        select * from menu
+    </select>
+
+    <!--回显所有menu信息-->
+    <!--根据ID查询menu    Menu findMenuById(Integer id);-->
+    <select id="findMenuById" parameterType="int" resultType="menu">
+        select * from menu where id = #{id}
+    </select>
+
+</mapper>
